@@ -1,0 +1,175 @@
+s<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Messages anonymes</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 16px 0 8px;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: #6ca0dc;
+      outline: none;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #4a90e2;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #357ab8;
+    }
+    .hint {
+      font-size: 12px;
+      color: #555;
+      margin-top: 12px;
+      text-align: center;
+    }
+    .lang-select {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    h2 {
+      font-size: 16px;
+      color: #0f0f0f;
+      font-weight: normal;
+      margin-top: -10px;
+      font-size: medium;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="lang-select">
+      🌐 <select id="language" onchange="changeLanguage()">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <h1 id="title"> Partage ton message</h1>
+    <h2>Ce form est initié dans le but de venir en aide au personnes qui traverses des moments difficiles(dépressions, oppressions et etc...), ce form permet de s'exprimer , aussi de manière anonymes en cochant la petite case</h2>
+    <form action="https://formspree.io/f/mandvyzl" method="POST">
+      <label>
+        <input type="checkbox" id="anon" onclick="toggleAnon()"> 
+        <span id="anon-label">Envoyer anonymement</span>
+      </label>
+
+      <input type="text" id="name" name="name" placeholder="Votre nom (facultatif)">
+      <input type="text" id="phone" name="phone" placeholder="Votre numéro (facultatif)">
+
+      <label for="message" id="msg-label">Ton message</label>
+      <textarea id="message" name="message" placeholder="Écris ton message..." required></textarea>
+      
+      <button type="submit" id="submit-btn"> Envoyer</button>
+      <p class="hint" id="hint-text"></p>
+    </form>
+  </div>
+
+  <script>
+    const texts = {
+      fr: {
+        title: " Partage ton message",
+        anon: "Envoyer anonymement",
+        name: "Votre nom (facultatif)",
+        phone: "Votre numéro (facultatif)",
+        msg: "Ton message",
+        msgPlaceholder: "Écris ton message...",
+        submit: " Envoyer",
+        hint: ""
+      },
+      en: {
+        title: " Share your message",
+        anon: "Send anonymously",
+        name: "Your name (optional)",
+        phone: "Your phone number (optional)",
+        msg: "Your message",
+        msgPlaceholder: "Write your message...",
+        submit: " Send",
+        hint: ""
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      document.getElementById("title").innerText = texts[lang].title;
+      document.getElementById("anon-label").innerText = texts[lang].anon;
+      document.getElementById("name").placeholder = texts[lang].name;
+      document.getElementById("phone").placeholder = texts[lang].phone;
+      document.getElementById("msg-label").innerText = texts[lang].msg;
+      document.getElementById("message").placeholder = texts[lang].msgPlaceholder;
+      document.getElementById("submit-btn").innerText = texts[lang].submit;
+      document.getElementById("hint-text").innerText = texts[lang].hint;
+    }
+
+    function toggleAnon() {
+      const anon = document.getElementById("anon");
+      const nameInput = document.getElementById("name");
+      const phoneInput = document.getElementById("phone");
+
+      if (anon.checked) {
+        nameInput.value = "";
+        phoneInput.value = "";
+        nameInput.disabled = true;
+        phoneInput.disabled = true;
+        nameInput.placeholder = "Anonyme";
+        phoneInput.placeholder = "Anonyme";
+      } else {
+        nameInput.disabled = false;
+        phoneInput.disabled = false;
+        changeLanguage(); // recharge les placeholders selon la langue
+      }
+    }
+  </script>
+</body>
+</html>
